@@ -1,0 +1,31 @@
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS locationn;
+DROP TABLE IF EXISTS movement;
+
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title TEXT NOT NULL ,
+    content TEXT NOT NULL
+);
+
+CREATE TABLE product (
+    prod_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    prod_name TEXT NOT NULL UNIQUE,
+    qty INTEGER
+);
+
+CREATE TABLE locationn (
+    location_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    location_name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE movement (
+    movement_id TEXT PRIMARY KEY,
+    timestampp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    from_l TEXT,
+    to_l TEXT,
+    prod_name TEXT NOT NULL,
+    qty INTEGER NOT NULL
+);
