@@ -18,5 +18,5 @@
 **View Product Movements**
 ![View Locations](https://github.com/mkaur24/inventory-management/blob/master/screenshots/Screenshot%20from%202021-02-14%2001-24-45.png)
 
-**Report**
+**View Report**
 ![Report](https://github.com/mkaur24/inventory-management/blob/master/screenshots/Screenshot%20from%202021-02-14%2001-27-47.png)
