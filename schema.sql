@@ -31,3 +31,11 @@ CREATE TABLE report (
     wh TEXT NOT NULL,
     qty INTEGER NOT NULL
 );
+
+CREATE TRIGGER IF NOT EXISTS qty_zero
+                    AFTER UPDATE ON report
+                    FOR EACH ROW
+                    WHEN new.qty=0
+                    BEGIN
+                        DELETE from report  WHERE p =new.p AND wh=new.wh;
+                    END;

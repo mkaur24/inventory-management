@@ -85,16 +85,43 @@ def transfers():
         elif not qty:
             flash("Quantity is required")
         else:
-            conn = get_db_connection()
-            conn.execute('INSERT INTO movement (prod_name,qty,from_l,to_l) VALUES (?,?,?,?)', (prod_name,qty,from_l,to_l))
-            b=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod_name,to_l))
-            if b[0]:
-                conn.execute('INSERT INTO report VALUES (?,?,?)',(prod_name,to_l,qty))
+            if from_l=='NULL':
+                conn = get_db_connection()
+                conn.execute('INSERT INTO movement (prod_name,qty,from_l,to_l) VALUES (?,?,?,?)', (prod_name,qty,from_l,to_l))
+                res=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod_name,to_l))
+                f=0
+                for i in res:
+                    f=1
+                if f==0:
+                    conn.execute('INSERT INTO report VALUES (?,?,?)',(prod_name,to_l,qty))
+                else:
+                    conn.execute('UPDATE report SET qty= qty+? WHERE p =? AND wh=?',(qty,prod_name,to_l))
+                conn.commit()
+                conn.close()
+            elif to_l=='NULL':
+                conn = get_db_connection()
+                conn.execute('INSERT INTO movement (prod_name,qty,from_l,to_l) VALUES (?,?,?,?)', (prod_name,qty,from_l,to_l))
+                res=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod_name,from_l))
+                conn.execute('UPDATE report SET qty= qty-? WHERE p =? AND wh=?',(qty,prod_name,from_l))
+                conn.commit()
+                conn.close()
             else:
-                conn.execute('UPDATE report SET qty= qty+? WHERE p =? AND wh=?',(qty,prod_name,to_l))
+                conn = get_db_connection()
+                conn.execute('INSERT INTO movement (prod_name,qty,from_l,to_l) VALUES (?,?,?,?)', (prod_name,qty,from_l,to_l))
+                res=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod_name,to_l))
+                f=0
+                for i in res:
+                    f=1
+                if f==0:
+                    conn.execute('INSERT INTO report VALUES (?,?,?)',(prod_name,to_l,qty))
+                    conn.execute('UPDATE report SET qty= qty-? WHERE p =? AND wh=?',(qty,prod_name,from_l))
+                else:
+                    conn.execute('UPDATE report SET qty= qty+? WHERE p =? AND wh=?',(qty,prod_name,to_l))
+                    conn.execute('UPDATE report SET qty= qty-? WHERE p =? AND wh=?',(qty,prod_name,from_l))
+                conn.commit()
+                conn.close()
 
-            conn.commit()
-            conn.close()
+
             return redirect(url_for('transfers'))
     return render_template('transfers.html', m=m, p=p,l=l)
 
