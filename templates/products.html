@@ -34,7 +34,6 @@
                             <th>ID</th>
                             <th>Product</th>
                             <th>Quantity</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,9 +43,7 @@
                             <td>{{ i['prod_id'] }}</td>
                             <td>{{ i['prod_name'] }}</td>
                             <td>{{ i['qty'] }}</td>
-                            <td>
-                                <a href="#editModal" class="edit" data-toggle="modal"><i class="zmdi zmdi-edit zmdi-hc-lg" data-toggle="tooltip" title="Edit"> &nbsp;</i> </a>
-                            </td>
+                            
                         </tr>
                         {% endfor %}
                     </tbody>

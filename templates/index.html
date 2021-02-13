@@ -17,13 +17,7 @@
         </div>
       </nav> 
       <div class="container">
-    {% for post in posts %}
-        <a href="#">
-            <h2>{{ post['title'] }}</h2>
-        </a>
-        <span class="badge badge-primary">{{ post['created'] }}</span>
-        <hr>
-    {% endfor %}
+    
     <h2>Report</h2>
     
     <br>
@@ -40,10 +34,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in product %}
+                        {% for i in report %}
                         <tr>
-                            <td>{{ i['prod_name'] }}</td>
-                            <td>{{ i['location'] }}</td>
+                            <td>{{ i['p'] }}</td>
+                            <td>{{ i['wh'] }}</td>
                             <td>{{ i['qty'] }}</td>                            
                         </tr>
                         {% endfor %}

@@ -24,9 +24,9 @@ def get_prodid(prod_name):
 @app.route('/')
 def index():
     conn = get_db_connection()
-    product = conn.execute('SELECT * FROM product').fetchall()
+    report = conn.execute('SELECT * FROM report').fetchall()
     conn.close()
-    return render_template('index.html', product=product)
+    return render_template('index.html', report=report)
 
 @app.route('/products', methods=('GET', 'POST'))
 def products():
@@ -73,9 +73,6 @@ def transfers():
     m = conn.execute('SELECT * FROM movement').fetchall()
     p = conn.execute('SELECT * FROM product').fetchall()
     l = conn.execute('SELECT location_name FROM locationn').fetchall()
-    m.append(p)
-    m.append(l)
-    print(m, file=sys.stderr)
     conn.close()
     if request.method == 'POST':
         prod_name = request.form['prod_name']
@@ -87,14 +84,17 @@ def transfers():
             flash('Name is required!')
         elif not qty:
             flash("Quantity is required")
-        elif not from_l:
-            flash("Source is required")
-        elif not to_l:
-            flash("Destination is required")
         else:
             conn = get_db_connection()
             conn.execute('INSERT INTO movement (prod_name,qty,from_l,to_l) VALUES (?,?,?,?)', (prod_name,qty,from_l,to_l))
+            b=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod_name,to_l))
+            if b[0]:
+                conn.execute('INSERT INTO report VALUES (?,?,?)',(prod_name,to_l,qty))
+            else:
+                conn.execute('UPDATE report SET qty= qty+? WHERE p =? AND wh=?',(qty,prod_name,to_l))
+
             conn.commit()
             conn.close()
             return redirect(url_for('transfers'))
-    return render_template('transfers.html', movement=m)
+    return render_template('transfers.html', m=m, p=p,l=l)
+
