@@ -80,7 +80,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Product Name</label>
-                        <select class="form-control" name="prod_name">
+                        <select id="prod" class="form-control" name="prod_name">
                             {% for i in p %}
                             <option value="{{ i['prod_name'] }}">{{ i['prod_name'] }}</option>
                             {% endfor %}
@@ -88,13 +88,11 @@
                     </div>
                     <div class="form-group">
                         <label>Source</label>
-                        <select class="form-control" name="from_l">
+                        <select id='loc' class="form-control" name="from_l">
                             <option value="NULL">None</option>
                             {% for i in l %}
                             <option value="{{ i['location_name'] }}">{{ i['location_name'] }}</option>
                             {% endfor %}
-
-
                         </select>
                     </div>
                     <div class="form-group">
@@ -119,4 +117,9 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById("mvp").addEventListener("click", function() {
+      document.getElementById("demo").innerHTML = "Hello World";
+    });
+    </script>
 {% endblock %}
