@@ -2,28 +2,36 @@
 
 {% block content %}
 
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-          <div class="navbar-header">
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
             <a class="navbar-brand" href="#">Inventory</a>
-          </div>
-          <ul class="nav navbar-nav" style="float:right">
-          
-    <li class=" nav-item"><a href="/">Report</a></li>
-          <li class="active" ><a class="nav-item" href="products">Products</a></li>
-          <li><a class="nav-item" href="locationn">Locations</a></li>
-          <li><a class="nav-item" href="transfers">Transfers</a></li>
-       
-          </ul>
         </div>
-      </nav> 
-      <div class="container">
-   
+        <ul class="nav navbar-nav" style="float:right">
+
+            <li class=" nav-item"><a href="/">Report</a></li>
+            <li class="active"><a class="nav-item" href="products">Products</a></li>
+            <li><a class="nav-item" href="locationn">Locations</a></li>
+            <li><a class="nav-item" href="transfers">Transfers</a></li>
+
+        </ul>
+    </div>
+</nav>
+<div class="container">
+
     <h2> List of Products</h2>
     <div style="float:right">
-        <a href="#addModal" class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal"><i class="zmdi zmdi-plus"></i> <span>Add New Product</span></a>
+        <a href="#addModal" class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal"><i
+                class="zmdi zmdi-plus"></i> <span>Add New Product</span></a>
     </div>
     <br>
+    <br>
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+
     <div class="row m-t-30">
         <div class="col-md-12">
             <!-- DATA TABLE-->
@@ -34,16 +42,20 @@
                             <th>ID</th>
                             <th>Product</th>
                             <th>Quantity</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                       
+
                         {% for i in product %}
                         <tr>
                             <td>{{ i['prod_id'] }}</td>
                             <td>{{ i['prod_name'] }}</td>
                             <td>{{ i['qty'] }}</td>
-                            
+                            <td>
+                                <a href="/{{ i['prod_name'] }}/pedit"><i class="zmdi zmdi-edit zmdi-hc-lg"
+                                        data-toggle="tooltip" title="Edit"> &nbsp;</i> </a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -52,31 +64,35 @@
             <!-- END DATA TABLE-->
         </div>
     </div>
+
+
 </div>
+
 <div id="addModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form method="post">
-				<div class="modal-header">						
-					<h4 class="modal-title">Add Product</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">					
-					<div class="form-group">
-						<label>Name</label>
-						<input type="text" name="prod_name" class="form-control" value="{{ request.form['prod_name'] }}" required>
-					</div>
-					<div class="form-group">
-						<label>Quantity</label>
-						<input type="text" name="qty" class="form-control" value="{{ request.form['qty'] }}" required>
-					</div>					
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-success" value="Add">
-				</div>
-			</form>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Product</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="prod_name" class="form-control" value="{{ request.form['prod_name'] }}"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="text" name="qty" class="form-control" value="{{ request.form['qty'] }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}
