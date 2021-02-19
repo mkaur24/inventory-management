@@ -2,8 +2,6 @@ from __future__ import print_function # In python 2.7
 import sys
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
-from werkzeug.exceptions import abort
-
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -13,21 +11,20 @@ def get_db_connection():
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'd,sjsfhugsbdchvh'
 
-def get_prodid(prod_name):
-    conn = get_db_connection()
-    post = conn.execute('SELECT * FROM products WHERE prod_name = ?',
-                        (prod_name,)).fetchone()
-    conn.close()
-    if post is None:
-        abort(404)
-    return post
-
 @app.route('/')
 def index():
     conn = get_db_connection()
     report = conn.execute('SELECT * FROM report').fetchall()
     conn.close()
     return render_template('index.html', report=report)
+
+@app.route('<p>/r', methods=("GET"))
+def r(p,s):
+    conn = get_db_connection()
+    report = conn.execute('SELECT * FROM report').fetchall()
+    conn.close()
+    return render_template('index.html', report=report)
+
 
 @app.route('/products', methods=('GET', 'POST'))
 def products():
@@ -85,6 +82,7 @@ def transfers():
     conn = get_db_connection()
     m = conn.execute('SELECT * FROM movement').fetchall()
     p = conn.execute('SELECT * FROM product').fetchall()
+    r = conn.execute('SELECT * FROM report').fetchall()
     l = conn.execute('SELECT location_name FROM locationn').fetchall()
     conn.close()
     if request.method == 'POST':
@@ -196,15 +194,13 @@ def transfers():
                             else:
                                 flash('Quantity cannot be moved. Not available at the source location!')
                     return redirect(url_for('transfers'))
-    return render_template('transfers.html', m=m, p=p,l=l)
+    return render_template('transfers.html', m=m, p=p,l=l, r=r)
 
 @app.route('/<lid>/edit', methods=('GET', 'POST'))
 def edit(lid):
     conn = get_db_connection()
     l = conn.execute('SELECT * FROM locationn WHERE location_name = ?',(lid,)).fetchone()
     conn.close()
-    if lid is None:
-        abort(404)
     if request.method == 'POST':
             location_name = request.form['location_name']
             if not location_name:
@@ -225,8 +221,6 @@ def pedit(pid):
     conn = get_db_connection()
     p = conn.execute('SELECT * FROM product WHERE prod_name = ?',(pid,)).fetchone()
     conn.close()
-    if pid is None:
-        abort(404)
     if request.method == 'POST':
             prod_name = request.form['prod_name']
             qty=request.form['qty']
