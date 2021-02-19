@@ -1,7 +1,7 @@
-from __future__ import print_function # In python 2.7
+from __future__ import print_function # In python 2.7 for debugging only
 import sys
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, jsonify, url_for, flash, redirect
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -17,6 +17,22 @@ def index():
     report = conn.execute('SELECT * FROM report').fetchall()
     conn.close()
     return render_template('index.html', report=report)
+
+@app.route('/<prod>/<loc>/r', methods=("GET","POST"))
+def r(prod,loc):
+    conn = get_db_connection()
+    res=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod,loc))
+    f=0
+    conn = get_db_connection()
+    for i in res:
+        f=1
+        if f==1:
+            r = [doc for doc in conn.execute('SELECT qty FROM report where p=? and wh=?',(prod,loc)).fetchone()]
+            print(r)
+            conn.close()
+        else:
+            r=[{"r":[0]}]
+    return jsonify({'r': r})
 
 @app.route('/products', methods=('GET', 'POST'))
 def products():
