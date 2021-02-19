@@ -43,7 +43,7 @@
                             <th>ID</th>
                             <th>Timestamp</th>
                             <th>from</th>
-                            <th>to</th>
+                            <th >to</th>
                             <th>Product</th>
                             <th>Quantity</th>
                         </tr>
@@ -52,12 +52,12 @@
 
                         {%for i in m %}
                         <tr>
-                            <td>{{ i['movement_id'] }}</td>
-                            <td>{{ i['timestampp'] }}</td>
-                            <td>{{ i['from_l'] }}</td>
-                            <td>{{ i['to_l'] }}</td>
-                            <td>{{ i['prod_name'] }}</td>
-                            <td>{{ i['qty'] }}</td>
+                            <td style="text-align: center;">{{ i['movement_id'] }}</td>
+                            <td >{{ i['timestampp'] }}</td>
+                            <td style="text-align: center;">{{ i['from_l'] }}</td>
+                            <td style="text-align: center;">{{ i['to_l'] }}</td>
+                            <td style="text-align: center;">{{ i['prod_name'] }}</td>
+                            <td >{{ i['qty'] }}</td>
 
                         </tr>
                         {% endfor %}
@@ -79,24 +79,28 @@
                 </div>
                 <div class="modal-body">
                     <div id="two">
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <select id="prod" class="form-control" name="prod_name">
-                            {% for i in p %}
-                            <option value="{{ i['prod_name'] }}">{{ i['prod_name'] }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="form-group">
+                            <label>Product Name</label>
+
+                            <select id="prod" class="form-control" name="prod_name">
+                                <option disabled selected value> -- select an option -- </option>
+
+                                {% for i in p %}
+                                <option value="{{ i['prod_name'] }}">{{ i['prod_name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Source</label>
+                            <select id='loc' class="form-control" name="from_l">
+                                <option disabled selected value> -- select an option -- </option>
+                                <option value="NULL">None</option>
+                                {% for i in l %}
+                                <option value="{{ i['location_name'] }}">{{ i['location_name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Source</label>
-                        <select id='loc' class="form-control" name="from_l">
-                            <option disabled selected value> -- select an option -- </option>
-                            <option value="NULL">None</option>
-                            {% for i in l %}
-                            <option value="{{ i['location_name'] }}">{{ i['location_name'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div></div>
                     <div class="form-group">
                         <label>Destination</label>
                         <select id="des" class="form-control" name="to_l">
@@ -107,9 +111,21 @@
                             {% endfor %}
 
                         </select> </div>
+                    <div class="pr"></div>
+                    <div class="l"></div>
+                    <div class="form-group">
+                        <input type="text" id="pr" name="qty" class="form-control" value="" required></div>
+                    <div class="form-group">
+
+                        <input type="text" id="l" name="qty" class="form-control" value="" required></div>
                     <div class="form-group">
                         <label>Quantity</label>
-                        <input type="text" id="info" name="qty" class="form-control" value="{{ request.form['qty'] }}" required>
+                        {%for i in r%}
+                        {% if i['prod_name']=='' and i["location_name"]=='' : %}
+                        <input type="text" id="info" name="qty" class="form-control"
+                            value="{{ request.form['qty']or r['qty'] }}" required>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -120,37 +136,44 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
 
 <script type="text/javascript">
     var prod = document.getElementById('prod');
     var loc = document.getElementById('loc');
+    var l = document.getElementById('l');
+    var pr = document.getElementById('pr');
     var two = document.getElementById('two');
-  var info = document.getElementById('info');
-  prod.onchange = function() {
-  info.value = prod.value +loc.value;
-  }
+    var info = document.getElementById('info');
+    two.onchange = function () {
+        info.value = prod.value + loc.value;
+        pr.value = prod.value;
+        l.value = loc.value;
+    }
 
-  two.addEventListener("change", function(){ 
-   element.innerText = "something"; 
-}); 
+    two.addEventListener("change", function () {
 
-  function fetchData() {
-  fetch('http://127.0.0.1:5000/r')
-  .then( response => response.json() )
-  .then( data => some_function(data) )
-}
-    </script> 
+        const pr = document.querySelector('.pr');
+        pr.textContent = `You like ${event.target.value}`;
+
+    });
+
+    function fetchData() {
+        fetch('http://127.0.0.1:5000/r')
+            .then(response => response.json())
+            .then(data => some_function(data))
+    }
+</script>
 
 <script type="text/javascript">
-    function u()
-    {
+    function u() {
         var select = document.getElementById("prod");
         var option = select.options[select.selectedIndex];
-        if (option.id == "Mobiles")
-        {
+        if (option.id == "Mobiles") {
             document.getElementById("info").value = option.text;
         }
     }
-    </script>
+</script>
 {% endblock %}

@@ -18,14 +18,6 @@ def index():
     conn.close()
     return render_template('index.html', report=report)
 
-@app.route('<p>/r', methods=("GET"))
-def r(p,s):
-    conn = get_db_connection()
-    report = conn.execute('SELECT * FROM report').fetchall()
-    conn.close()
-    return render_template('index.html', report=report)
-
-
 @app.route('/products', methods=('GET', 'POST'))
 def products():
     conn = get_db_connection()

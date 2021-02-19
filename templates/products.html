@@ -39,9 +39,9 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Product</th>
-                            <th>Quantity</th>
+                            <th  style="text-align: center;">ID</th>
+                            <th style="text-align: center;">Product</th>
+                            <th style="text-align: center;">Quantity</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -49,9 +49,9 @@
 
                         {% for i in product %}
                         <tr>
-                            <td>{{ i['prod_id'] }}</td>
-                            <td>{{ i['prod_name'] }}</td>
-                            <td>{{ i['qty'] }}</td>
+                            <td style="text-align: center;">{{ i['prod_id'] }}</td>
+                            <td style="text-align: center;">{{ i['prod_name'] }}</td>
+                            <td style="text-align: center;">{{ i['qty'] }}</td>
                             <td>
                                 <a href="/{{ i['prod_name'] }}/pedit"><i class="zmdi zmdi-edit zmdi-hc-lg"
                                         data-toggle="tooltip" title="Edit"> &nbsp;</i> </a>

@@ -27,16 +27,16 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Location</th>
+                            <th style="text-align: center;">ID</th>
+                            <th style="text-align: center;">Location</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for i in locationn %}
                         <tr>
-                            <td>{{ i['location_id'] }}</td>
-                            <td>{{ i['location_name'] }}</td>
+                            <td style="text-align: center;">{{ i['location_id'] }}</td>
+                            <td style="text-align: center;">{{ i['location_name'] }}</td>
                             <td>
                                 <a href="/{{ i['location_name'] }}/edit"><i class="zmdi zmdi-edit zmdi-hc-lg"
                                         data-toggle="tooltip" title="Edit">
