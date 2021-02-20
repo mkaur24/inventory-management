@@ -21,17 +21,21 @@ def index():
 @app.route('/<prod>/<loc>/r', methods=("GET","POST"))
 def r(prod,loc):
     conn = get_db_connection()
-    res=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod,loc))
-    f=0
-    conn = get_db_connection()
-    for i in res:
-        f=1
-        if f==1:
-            r = [doc for doc in conn.execute('SELECT qty FROM report where p=? and wh=?',(prod,loc)).fetchone()]
-            print(r)
-            conn.close()
-        else:
-            r=[{"r":[0]}]
+    if loc!="NULL":
+        res=conn.execute('SELECT * from report WHERE p=? and wh=?',(prod,loc))
+        f=0
+        conn = get_db_connection()
+        for i in res:
+            f=1
+            if f==1:
+                r = [doc for doc in conn.execute('SELECT qty FROM report where p=? and wh=?',(prod,loc)).fetchone()]
+                print(r)
+                conn.close()
+            else:
+                r=[0]
+    else:
+        conn = get_db_connection()
+        r=[doc for doc in conn.execute('SELECT qty FROM product where prod_name=?',(prod,)).fetchone()]
     return jsonify({'r': r})
 
 @app.route('/products', methods=('GET', 'POST'))

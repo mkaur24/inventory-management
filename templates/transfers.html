@@ -92,7 +92,7 @@
                         </div>
                         <div class="form-group">
                             <label>Source</label>
-                            <select id='loc' class="form-control" name="from_l">
+                            <select id='loc' class="form-control" name="from_l" required>
                                 <option disabled selected value> -- select an option -- </option>
                                 <option value="NULL">None</option>
                                 {% for i in l %}
@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group">
                         <label>Destination</label>
-                        <select id="des" class="form-control" name="to_l">
+                        <select id="des" class="form-control" name="to_l" required>
                             <option disabled selected value> -- select an option -- </option>
                             <option value="NULL">None</option>
                             {% for i in l %}
@@ -111,13 +111,6 @@
                             {% endfor %}
 
                         </select> </div>
-                    <div class="pr"></div>
-                    <div class="l"></div>
-                    <div class="form-group">
-                        <input type="text" id="pr" name="pr" class="form-control" value="" required></div>
-                    <div class="form-group">
-
-                        <input type="text" id="l" name="l" class="form-control" value="" required></div>
                     <div class="form-group">
                         <label>Quantity</label>
 
@@ -140,32 +133,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-    var prod = document.getElementById('prod');
-    var loc = document.getElementById('loc');
-    var l = document.getElementById('l');
-    var pr = document.getElementById('pr');
     var two = document.getElementById('two');
     var info = document.getElementById('info');
-    var x = "http://127.0.0.1:5000/" + prod.value+ "/" + loc.value + "/r"
+    var x = "http://127.0.0.1:5001/" + prod.value+ "/" + loc.value + "/r"
     two.onchange = function () {
         var prod = document.getElementById('prod');
     var loc = document.getElementById('loc');
-    var l = document.getElementById('l');
-    var pr = document.getElementById('pr');
     var two = document.getElementById('two');
     var info = document.getElementById('info');
-    var x = "http://127.0.0.1:5000/" + prod.value+ "/" + loc.value + "/r"
-        pr.value = prod.value;
-        l.value = loc.value;
+    var x = "http://127.0.0.1:5001/" + prod.value+ "/" + loc.value + "/r"
+       
         const xhr = new XMLHttpRequest();
         console.log("here")
                         xhr.open("GET", x, true);
                         xhr.onload = function () {
 
                             // Changing string data into JSON Object 
-                            obj = this.responseText;
+                            obj = JSON.parse(this.responseText);
                             console.log(obj)
-                            console.log(obj["r"])
+                            console.log(obj.r)
                             info.value = obj.r;
                             info.max = obj.r
                         }
