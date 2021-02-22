@@ -142,7 +142,6 @@
     var two = document.getElementById('two');
     var info = document.getElementById('info');
     var x = "http://127.0.0.1:5001/" + prod.value+ "/" + loc.value + "/r"
-       
         const xhr = new XMLHttpRequest();
         console.log("here")
                         xhr.open("GET", x, true);
@@ -156,43 +155,6 @@
                             info.max = obj.r
                         }
                         xhr.send();
-    }
-
-    $(document).ready(function () {
-                $("two").change(function () {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open("GET", x, true);
-                        xhr.onload = function () {
-
-                            // Changing string data into JSON Object 
-                            obj = JSON.parse(this.responseText);
-                            console.log(obj + "random")
-
-                            for (key in obj.data) {
-                                str += `${obj.data[key].qty}`;
-                            }
-                            console.log(str)
-                            info.innerHTML = str;
-
-                            console.log("File not found");
-
-                        }
-
-                        // At last send the request 
-                        xhr.send();
-                    })
-                });
-
-           
-</script>
-
-<script type="text/javascript">
-    function u() {
-        var select = document.getElementById("prod");
-        var option = select.options[select.selectedIndex];
-        if (option.id == "Mobiles") {
-            document.getElementById("info").value = option.text;
-        }
     }
 </script>
 {% endblock %}

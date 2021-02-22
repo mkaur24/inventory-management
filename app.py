@@ -27,12 +27,11 @@ def r(prod,loc):
         conn = get_db_connection()
         for i in res:
             f=1
-            if f==1:
-                r = [doc for doc in conn.execute('SELECT qty FROM report where p=? and wh=?',(prod,loc)).fetchone()]
-                print(r)
-                conn.close()
-            else:
-                r=[0]
+        if f==1:
+            r = [doc for doc in conn.execute('SELECT qty FROM report where p=? and wh=?',(prod,loc)).fetchone()]
+            conn.close()
+        else:
+            r=[0]
     else:
         conn = get_db_connection()
         r=[doc for doc in conn.execute('SELECT qty FROM product where prod_name=?',(prod,)).fetchone()]
